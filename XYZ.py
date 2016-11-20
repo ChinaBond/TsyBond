@@ -11,7 +11,6 @@ class Bond:
     # TODO:
     # add SelectTemplate to provide default values
     # more precise day count calculation
-    #     
     
     data = {}
     verbose = False
@@ -50,21 +49,42 @@ class Bond:
             df = 1
             t = 0
             tprev = 0
+            accrued = -1
             while d <= MaturityDate:
+                dprev = d
                 d = (d + NextCoupon).date()
                 if d >= PricingDate:
+                    if accrued < 0:
+                        DaysAccrued = (PricingDate - dprev).days
+                        DaysInPeriod = (d - dprev).days
+                        accrued = coupon*YearFraction/DaysInPeriod*DaysAccrued
+                        if self.verbose:
+                            print(d, 'Accrued : {:10.4f}%'.format(accrued*100))
                     t = (d - PricingDate).days/365
                     df *= 1/(1 + (t - tprev)*y)
                     p += coupon*YearFraction*df
                     tprev = t
                     if self.verbose:
-                        print(d, t, df, p)
+                        print(d, "Coupon {:10.4f} {:10.4f} {:10.4f}%".format(t, df, p*100))
             p += df
+            self.data['accrued'] = accrued
+            if clean:
+                p -= accrued
         return p
 
     def Duration(self):
-        pass
+        y = self.data['yield']
+        DeltaShock = 0.0001
+        p0 = self.YieldToPrice(y)
+        p1 = self.YieldToPrice(y + DeltaShock)
+        return (p1 - p0)/DeltaShock
 
     def Gamma(self):
-        pass
+        y = self.data['yield']
+        DeltaShock = 0.0001
+        p0 = self.YieldToPrice(y - 0.0001)
+        p1 = self.YieldToPrice(y)
+        p2 = self.YieldToPrice(y + 0.0001)
+        return (p0 + p2 - 2*p1)/DeltaShock/DeltaShock
+        
 
