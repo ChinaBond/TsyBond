@@ -18,14 +18,18 @@ class Client:
         self.domain = 'api.wmcloud.com'
         self.port = 443
         self.httpClient = httplib.HTTPSConnection(self.domain, self.port, timeout=60)
+        self.homePath = '/home/shaunz/Documents/ChinaBond/'
         #set token
-        token_file = open('/home/shaunz/Documents/ChinaBond/Login/Dataeyes Token','r')
+        token_file = open('%sLogin/Dataeyes Token' % self.homePath,'r')
         self.token = token_file.read(64)
             
     def __del__( self ):
         if self.httpClient is not None:
             self.httpClient.close()
-            
+    
+    def getHomePath(self):
+        return self.homePath
+    
     def encodepath(self, path):
         #转换参数的编码
         start=0
