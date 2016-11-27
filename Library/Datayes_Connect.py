@@ -18,9 +18,9 @@ class Client:
         self.domain = 'api.wmcloud.com'
         self.port = 443
         self.httpClient = httplib.HTTPSConnection(self.domain, self.port, timeout=60)
-        self.homePath = '/home/shaunz/Documents/ChinaBond/'
+        self.homePath = '/home/shaunz/Documents/ChinaBond'
         #set token
-        token_file = open('%sLogin/Dataeyes Token' % self.homePath,'r')
+        token_file = open('%s/Login/Dataeyes Token' % self.homePath,'r')
         self.token = token_file.read(64)
             
     def __del__( self ):

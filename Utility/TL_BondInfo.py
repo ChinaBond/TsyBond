@@ -11,5 +11,5 @@ bondInfo = client.getBondInfo()
 df = pandas.DataFrame(bondInfo['data'])
 #202010101 is the typeID for Treasuries
 tsy = df[df['typeID']==202010101]
-tsy.to_csv('%sbondIno.csv' % (client.getHomePath()),encoding='utf-8')
-print 'bond info saved'
+tsy.to_csv('%s/bondInfo.csv' % (client.getHomePath()),encoding='utf-8')
+print('bond info saved')
