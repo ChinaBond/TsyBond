@@ -11,6 +11,7 @@ HTTP_AUTHORIZATION_ERROR = 401
 
 class Client:
     #设置因网络连接，重连的次数
+    # TODO: customize where to load token
     reconnectTimes=2
     httpClient = None
     def __init__( self ):
